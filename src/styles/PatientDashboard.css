@@ -164,3 +164,13 @@ body {
   }
 
 }
+.logout {
+  margin-top: 40px;
+  color: #ffdddd;
+  transition: 0.3s;
+}
+
+.logout:hover {
+  background: rgba(255, 0, 0, 0.2);
+  color: white;
+}

@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserCircle, FaHospital } from "react-icons/fa";
+import { FaUserCircle, FaBars } from "react-icons/fa";
 import "./Navbar.css";
 
 export default function Navbar() {
 
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
+  const loadUser = () => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
     }
+  };
+
+  useEffect(() => {
+    loadUser();
+
+    // Listen for login/logout changes
+    window.addEventListener("authChange", loadUser);
+
+    return () => {
+      window.removeEventListener("authChange", loadUser);
+    };
   }, []);
 
   return (
@@ -21,51 +34,33 @@ export default function Navbar() {
       <div className="navbar-container">
 
         <div className="logo" onClick={() => navigate("/")}>
-          Medi-Connect
+          MediConnect
         </div>
 
-        <ul className="nav-links">
+        {/* Mobile Menu Icon */}
+        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+          <FaBars />
+        </div>
+
+        <ul className={menuOpen ? "nav-links active" : "nav-links"}>
           <li onClick={() => navigate("/")}>Home</li>
           <li onClick={() => navigate("/about")}>About</li>
           <li onClick={() => navigate("/contact")}>Contact</li>
 
           {!user ? (
             <>
-              {/* Patient Login */}
-              <li className="login-btn" onClick={() => navigate("/auth")}>
-                Patient Login
-              </li>
-
-              {/* Hospital Login */}
-              <li
-                className="hospital-btn"
-                onClick={() => navigate("/organizationlogin")}
-              >
-                <FaHospital style={{ marginRight: "6px" }} />
+              <li onClick={() => navigate("/auth")}>Patient Login</li>
+              <li onClick={() => navigate("/organizationlogin")}>
                 Hospital Login
               </li>
             </>
           ) : (
             <li
-              className="profile-wrapper"
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
+              className="profile"
+              onClick={() => navigate("/patient-dashboard")}
             >
-              <div
-                className="profile-display"
-                onClick={() => navigate("/patient-dashboard")}
-              >
-                <FaUserCircle className="profile-icon" />
-                <span>{user.name}</span>
-              </div>
-
-              {showDropdown && (
-                <div className="profile-dropdown">
-                  <div onClick={() => navigate("/patient-dashboard")}>
-                    Dashboard
-                  </div>
-                </div>
-              )}
+              <FaUserCircle className="profile-icon" />
+              <span>{user.name}</span>
             </li>
           )}
         </ul>
