@@ -68,7 +68,7 @@ const navigate= useNavigate();
         return;
       }
 
-      url = "http://10.50.61.66:8080/mediconnect/api/patients/register";
+      url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/patients/register";
       payload = {
         name: formData.name,
         phoneNumber: formData.phoneNumber,
