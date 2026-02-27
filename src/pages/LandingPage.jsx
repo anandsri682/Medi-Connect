@@ -18,7 +18,7 @@ export default function LandingPage() {
 
   const fetchHospitals = async () => {
     try {
-      const response = await fetch("http://10.50.61.66:8080/mediconnect/all");
+      const response = await fetch("https://mediconnect-production-00d8.up.railway.app/mediconnect/all");
       const data = await response.json();
       setHospitals(data);
     } catch (error) {

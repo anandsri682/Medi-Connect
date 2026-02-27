@@ -149,3 +149,13 @@
     flex-direction: column;
   }
 }
+.clinic-name-bar {
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+    color: white;
+    padding: 15px;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+}

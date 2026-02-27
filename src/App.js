@@ -10,6 +10,7 @@ import OrganizationLogin from "./pages/OrganizationLogin";
   import PatientDashboard from "./pages/PatientDashboard";
   import ClinicDashboard from "./pages/ClinicDashboard";
 import Footer from "./pages/Footer";
+import BookAppointment from "./pages/BookAppointment";
 function App() {
   return (
     <Router>
@@ -25,7 +26,7 @@ function App() {
         <Route path="/patient-dashboard" element={<PatientDashboard />} />
         <Route path="/organization-dashboard" element={<OrganizationDashboard />} />
         <Route path="/clinic/:id" element={<ClinicDashboard />} />
-        
+        <Route path="/clinic/:id/book" element={<BookAppointment />} />
 
 
       </Routes>

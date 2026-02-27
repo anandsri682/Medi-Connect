@@ -31,7 +31,7 @@ const navigate = useNavigate();
     // ✅ LOGIN
     if (isLogin) {
 
-      url = "http://10.26.3.179:8080/mediconnect/api/clinic/login";
+      url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/clinic/login";
 
       payload = {
         mail: formData.mail,
@@ -48,7 +48,7 @@ const navigate = useNavigate();
         return;
       }
 
-      url = "http://10.26.3.179:8080/mediconnect/api/clinic/register";
+      url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/clinic/register";
 
       payload = {
         hospitalName: formData.hospitalName,

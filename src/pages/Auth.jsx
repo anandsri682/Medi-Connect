@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaPhone,
@@ -12,7 +13,7 @@ import {
 import "../styles/Auth.css";
 
 export default function Auth() {
-
+const navigate= useNavigate();
   const [isLogin, setIsLogin] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -54,7 +55,7 @@ export default function Auth() {
     let payload;
 
     if (isLogin) {
-      url = "http://10.50.61.66:8080/mediconnect/api/patients/login";
+      url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/patients/login";
       payload = {
         phoneOrAadhaar,
         password: formData.password
@@ -90,20 +91,18 @@ export default function Auth() {
 
       const data = await response.json();
 
-     if (response.ok) {
+    if (response.ok) {
   setSuccess(true);
-  setMessage(data.message || "Success");
+  setMessage("Login Successful");
 
-  if (isLogin) {
-    // ✅ Save user data
-    localStorage.setItem("user", JSON.stringify(data));
+  // Save complete user
+  localStorage.setItem("user", JSON.stringify(data));
 
-    // ✅ Redirect to home
-    window.location.href = "/";
-  } else {
-    // ✅ After register go to login
-    setIsLogin(true);
-  }
+  // 🔥 Save patientId separately
+  localStorage.setItem("patientId", data.id);
+
+  navigate("/patient-dashboard");
+
 }else {
         setSuccess(false);
         setMessage(data.message || "Something went wrong");

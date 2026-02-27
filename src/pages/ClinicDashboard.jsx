@@ -30,9 +30,12 @@ export default function ClinicDashboard() {
             and expert doctors for your well-being.
           </p>
 
-          <button className="primary-btn">
-            Book Appointment
-          </button>
+          <button onClick={() =>           navigate(`/clinic/${clinic.id}/book`, {
+  state: { clinic }
+})}>
+ ;
+  Book Appointment
+</button>
         </div>
 
         <div className="hero-right">
