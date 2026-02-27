@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaPhone,
@@ -13,7 +13,7 @@ import {
 import "../styles/Auth.css";
 
 export default function Auth() {
-const navigate= useNavigate();
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -30,14 +30,15 @@ const navigate= useNavigate();
   });
 
   const [phoneOrAadhaar, setPhoneOrAadhaar] = useState("");
-
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(true);
+  const [loading, setLoading] = useState(false);
 
+  // Handle Input Change
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Aadhaar format
+    // Aadhaar formatting (XXXX XXXX XXXX)
     if (name === "aadhaarNumber") {
       const cleaned = value.replace(/\D/g, "").slice(0, 12);
       const formatted = cleaned.replace(/(\d{4})(?=\d)/g, "$1 ");
@@ -48,27 +49,37 @@ const navigate= useNavigate();
     setFormData({ ...formData, [name]: value });
   };
 
+  const showMessage = (msg, isSuccess = true) => {
+    setSuccess(isSuccess);
+    setMessage(msg);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    let url;
-    let payload;
+    let url = "";
+    let payload = {};
 
     if (isLogin) {
-      url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/patients/login";
+      url =
+        "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/patients/login";
+
       payload = {
         phoneOrAadhaar,
         password: formData.password
       };
     } else {
       if (formData.password !== formData.confirmPassword) {
-        setSuccess(false);
-        setMessage("Passwords do not match");
-        setTimeout(() => setMessage(""), 3000);
+        showMessage("Passwords do not match", false);
+        setLoading(false);
         return;
       }
 
-      url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/patients/register";
+      url =
+        "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/patients/register";
+
       payload = {
         name: formData.name,
         phoneNumber: formData.phoneNumber,
@@ -89,36 +100,62 @@ const navigate= useNavigate();
         body: JSON.stringify(payload)
       });
 
-      const data = await response.json();
-
-    if (response.ok) {
-  setSuccess(true);
-  setMessage("Login Successful");
-
-  // Save complete user
-  localStorage.setItem("user", JSON.stringify(data));
-
-  // 🔥 Save patientId separately
-  localStorage.setItem("patientId", data.id);
-
-  navigate("/patient-dashboard");
-
-}else {
-        setSuccess(false);
-        setMessage(data.message || "Something went wrong");
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (err) {
+        data = { message: "Invalid server response" };
       }
 
+      if (response.ok) {
+        showMessage(
+          isLogin ? "Login Successful" : "Registration Successful",
+          true
+        );
+
+        // Save full user object
+        localStorage.setItem("user", JSON.stringify(data));
+
+        // Save patientId safely
+        localStorage.setItem(
+          "patientId",
+          data.id || data.patientId || ""
+        );
+
+        // Clear form
+        setFormData({
+          name: "",
+          phoneNumber: "",
+          email: "",
+          gender: "",
+          age: "",
+          aadhaarNumber: "",
+          bloodGroup: "",
+          address: "",
+          password: "",
+          confirmPassword: ""
+        });
+
+        setPhoneOrAadhaar("");
+
+        // Redirect only after login
+        if (isLogin) {
+          navigate("/patient-dashboard");
+        } else {
+          setIsLogin(true);
+        }
+      } else {
+        showMessage(data.message || "Something went wrong", false);
+      }
     } catch (error) {
-      setSuccess(false);
-      setMessage("Server error");
+      showMessage("Server error. Please try again.", false);
     }
 
-    setTimeout(() => setMessage(""), 3000);
+    setLoading(false);
   };
 
   return (
     <div className="auth-page">
-
       {message && (
         <div className={`toast ${success ? "success" : "error"}`}>
           {message}
@@ -126,11 +163,9 @@ const navigate= useNavigate();
       )}
 
       <div className="auth-card">
-
         <h2>{isLogin ? "Login" : "Create Account"}</h2>
 
         <form onSubmit={handleSubmit}>
-
           {/* LOGIN */}
           {isLogin && (
             <>
@@ -276,10 +311,13 @@ const navigate= useNavigate();
             </>
           )}
 
-          <button type="submit" className="primary-btn">
-            {isLogin ? "Login" : "Register"}
+          <button type="submit" className="primary-btn" disabled={loading}>
+            {loading
+              ? "Please wait..."
+              : isLogin
+              ? "Login"
+              : "Register"}
           </button>
-
         </form>
 
         <div className="toggle-text">
@@ -295,7 +333,6 @@ const navigate= useNavigate();
             </>
           )}
         </div>
-
       </div>
     </div>
   );
