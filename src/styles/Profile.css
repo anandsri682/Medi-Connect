@@ -1,0 +1,15 @@
+.profile-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #A7C7E7, #4A90E2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  width: 400px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}

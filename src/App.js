@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Navbar from "./components/Navbar/Navbar";
+import LandingPage from "./pages/LandingPage";
+import Auth from "./pages/Auth";
+import OrganizationLogin from "./pages/OrganizationLogin";
+  import About from "./pages/About";
+  import Contact from "./pages/Contact";
+  import OrganizationDashboard from "./pages/OrganizationDashboard"; 
+ import Navbar from "./components/Navbar/Navbar";
+  import PatientDashboard from "./pages/PatientDashboard";
+  import ClinicDashboard from "./pages/ClinicDashboard";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+       {/* ✅ Only here */}
+      <Navbar/>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/organizationlogin" element={<OrganizationLogin/>} />
+        <Route path="/patient-dashboard" element={<PatientDashboard />} />
+        <Route path="/organization-dashboard" element={<OrganizationDashboard />} />
+        <Route path="/clinic/:id" element={<ClinicDashboard />} />
+        
+
+
+      </Routes>
+    </Router>
   );
 }
 

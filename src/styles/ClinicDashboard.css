@@ -1,0 +1,38 @@
+.clinic-container {
+  min-height: 100vh;
+  padding: 120px 40px;
+  text-align: center;
+  color: white;
+  background: linear-gradient(135deg, #1E3C72, #2A5298);
+}
+
+.clinic-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.clinic-container p {
+  opacity: 0.8;
+  margin-bottom: 50px;
+}
+
+.clinic-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.clinic-card {
+  width: 260px;
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  transition: 0.4s ease;
+}
+
+.clinic-card:hover {
+  transform: translateY(-10px);
+}

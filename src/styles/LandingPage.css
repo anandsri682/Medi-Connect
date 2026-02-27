@@ -1,0 +1,102 @@
+.landing-container {
+  min-height: 100vh;
+  padding: 120px 40px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: white;
+
+  background: linear-gradient(135deg, #1E3C72, #2A5298);
+}
+
+.landing-container h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.landing-container p {
+  opacity: 0.85;
+  margin-bottom: 60px;
+}
+
+/* Grid Layout */
+.hospital-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* Hospital Card */
+.hospital-card {
+  width: 300px;
+  padding: 25px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+
+  transition: 0.4s ease;
+  text-align: left;
+}
+
+.hospital-card h2 {
+  margin-bottom: 15px;
+}
+
+.hospital-card p {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.hospital-card button {
+  margin-top: 15px;
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: none;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hospital-card button:hover {
+  background: black;
+  color: white;
+}
+
+.hospital-card:hover {
+  transform: translateY(-10px);
+}
+
+/* Loader */
+.loader {
+  border: 5px solid rgba(255,255,255,0.2);
+  border-top: 5px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-text {
+  color: #ff4d4d;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hospital-card {
+    width: 90%;
+  }
+
+  .landing-container h1 {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,82 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HERO SECTION */
+.about-hero {
+  background: linear-gradient(135deg, #A7C7E7, #4A90E2);
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.about-hero h1 {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+.about-hero p {
+  font-size: 18px;
+  max-width: 600px;
+  margin: auto;
+  opacity: 0.9;
+}
+
+/* CONTENT SECTION */
+.about-section {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  background: #F8FAFC;
+}
+
+/* CARD */
+.about-card {
+  background: white;
+  width: 300px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.about-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+.about-card h2 {
+  color: #4A90E2;
+  margin-bottom: 15px;
+}
+
+.about-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.about-card ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.about-card li {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .about-section {
+    flex-direction: column;
+    align-items: center;
+  }
+}

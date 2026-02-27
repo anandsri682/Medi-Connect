@@ -1,0 +1,109 @@
+/* Background */
+.org-container {
+  min-height: 100vh;
+  padding-top: 120px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: white;
+
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+/* Header */
+.org-main h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.org-main p {
+  font-size: 18px;
+  opacity: 0.8;
+  margin-bottom: 60px;
+}
+
+/* Card Layout */
+.org-card-group {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Card Design */
+.org-card {
+  width: 300px;
+  padding: 35px 25px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+
+  transition: all 0.4s ease;
+}
+
+/* Glow top borders */
+.patients {
+  border-top: 4px solid #00e676;
+}
+
+.doctors {
+  border-top: 4px solid #00b0ff;
+}
+
+.appointments {
+  border-top: 4px solid #ab47bc;
+}
+
+/* Icon */
+.card-icon {
+  font-size: 55px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+/* Card Text */
+.org-card h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.org-card p {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 25px;
+}
+
+/* Button */
+.org-card button {
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  background: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Hover */
+.org-card:hover {
+  transform: translateY(-12px) scale(1.05);
+}
+
+.org-card button:hover {
+  background: black;
+  color: white;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .org-card {
+    width: 90%;
+  }
+
+  .org-main h1 {
+    font-size: 28px;
+  }
+}
