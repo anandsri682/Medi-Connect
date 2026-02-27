@@ -9,11 +9,13 @@ import OrganizationLogin from "./pages/OrganizationLogin";
  import Navbar from "./components/Navbar/Navbar";
   import PatientDashboard from "./pages/PatientDashboard";
   import ClinicDashboard from "./pages/ClinicDashboard";
+import Footer from "./pages/Footer";
 function App() {
   return (
     <Router>
        {/* ✅ Only here */}
       <Navbar/>
+      <div className="main-content">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<Auth />} />
@@ -27,7 +29,10 @@ function App() {
 
 
       </Routes>
+      <Footer/>
+      </div>
     </Router>
+    
   );
 }
 

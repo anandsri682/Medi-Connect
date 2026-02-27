@@ -1,38 +1,151 @@
 .clinic-container {
-  min-height: 100vh;
-  padding: 120px 40px;
-  text-align: center;
-  color: white;
-  background: linear-gradient(135deg, #1E3C72, #2A5298);
+  font-family: "Poppins", sans-serif;
 }
 
-.clinic-container h1 {
-  font-size: 36px;
+/* HERO SECTION */
+.clinic-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 8%;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.hero-left h4 {
+  color: #1976d2;
   margin-bottom: 10px;
 }
 
-.clinic-container p {
-  opacity: 0.8;
-  margin-bottom: 50px;
+.hero-left h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
 }
 
-.clinic-grid {
+.hero-left p {
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.primary-btn {
+  padding: 12px 8px;
+  background: #1976d2;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.primary-btn:hover {
+  background: #0d47a1;
+  transform: scale(1.05);
+}
+
+.hero-right img {
+  width: 420px;
+  border-radius: 20px;
+}
+
+/* FEATURES */
+.clinic-features {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
+  gap: 30px;
+  padding: 60px 8%;
+  background: white;
 }
 
-.clinic-card {
-  width: 260px;
-  padding: 30px;
+.feature-card {
+  flex: 1;
+  padding: 25px;
+  background: #f5f9ff;
+  border-radius: 15px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+}
+
+/* ABOUT */
+.clinic-about {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 80px 8%;
+  background: #f5f9ff;
+}
+
+.about-left img {
+  width: 400px;
   border-radius: 20px;
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  transition: 0.4s ease;
 }
 
-.clinic-card:hover {
-  transform: translateY(-10px);
+.about-right h2 {
+  margin-bottom: 20px;
+}
+
+.about-info p {
+  margin: 8px 0;
+}
+
+/* SERVICES */
+.clinic-services {
+  padding: 80px 8%;
+  text-align: center;
+}
+
+.clinic-services h2 {
+  margin-bottom: 40px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.service-card {
+  padding: 25px;
+  background: #e3f2fd;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+
+.service-card:hover {
+  background: #1976d2;
+  color: white;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .clinic-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-right img {
+    width: 90%;
+    margin-top: 30px;
+  }
+
+  .clinic-about {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-left img {
+    width: 90%;
+  }
+
+  .clinic-features {
+    flex-direction: column;
+  }
 }
