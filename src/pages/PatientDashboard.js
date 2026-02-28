@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Sidebar from "./Sidebar";
 import "../styles/PatientDashboard.css";
 
@@ -8,6 +8,7 @@ const PatientDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
 
+  // Load patient from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -15,14 +16,10 @@ const PatientDashboard = () => {
     }
   }, []);
 
-  // 🔥 Auto load appointments when tab changes
-  useEffect(() => {
-    if (activeTab === "appointments" && patient) {
-      fetchAppointments();
-    }
-  }, [activeTab, patient]);
+  // 🔥 FIX: Wrap fetchAppointments in useCallback
+  const fetchAppointments = useCallback(async () => {
+    if (!patient?.id) return;
 
-  const fetchAppointments = async () => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -34,7 +31,14 @@ const PatientDashboard = () => {
       console.log("Error fetching appointments:", error);
     }
     setLoading(false);
-  };
+  }, [patient]);
+
+  // 🔥 FIX: Add fetchAppointments as dependency
+  useEffect(() => {
+    if (activeTab === "appointments") {
+      fetchAppointments();
+    }
+  }, [activeTab, fetchAppointments]);
 
   if (!patient) return null;
 

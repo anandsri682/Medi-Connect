@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   FaPaperPlane,
   FaExpand,
@@ -18,10 +18,8 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [language, setLanguage] = useState("en");
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
-
   const [isTyping, setIsTyping] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -31,6 +29,85 @@ export default function ChatBot() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  /* ================= SEND FUNCTION ================= */
+  const sendToBackend = useCallback(async (text) => {
+
+    const cleanText = text?.trim();
+    if (!cleanText && !selectedFile) return;
+
+    speechSynthesis.cancel();
+    setIsSpeaking(false);
+    setIsTyping(true);
+
+    try {
+      let response;
+
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+        formData.append("message", cleanText || "Explain this image");
+        formData.append("language", language);
+
+        response = await fetch(
+          `${BASE_URL}/mediconnect/api/ai/chat`,
+          { method: "POST", body: formData }
+        );
+
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: "user",
+            type: "image",
+            image: previewURL,
+            text: cleanText
+          }
+        ]);
+
+      } else {
+
+        setMessages(prev => [
+          ...prev,
+          { sender: "user", type: "text", text: cleanText }
+        ]);
+
+        response = await fetch(
+          `${BASE_URL}/mediconnect/api/ai/chat`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              message: cleanText,
+              language: language
+            })
+          }
+        );
+      }
+
+      if (!response.ok) throw new Error();
+
+      const data = await response.text();
+
+      setMessages(prev => [
+        ...prev,
+        { sender: "bot", type: "text", text: data }
+      ]);
+
+      speak(data);
+
+    } catch {
+      setMessages(prev => [
+        ...prev,
+        { sender: "bot", type: "text", text: "⚠️ Unable to reach server." }
+      ]);
+    }
+
+    setInput("");
+    setSelectedFile(null);
+    setPreviewURL(null);
+    setIsTyping(false);
+
+  }, [selectedFile, previewURL, language]);
 
   /* ================= AUTO VOICE LISTEN ================= */
   useEffect(() => {
@@ -61,123 +138,11 @@ export default function ChatBot() {
     recognition.onend = () => recognition.start();
     recognition.start();
 
-  }, []);
+    return () => recognition.stop();
 
-  /* ================= SEND FUNCTION ================= */
-
-  const sendToBackend = async (text) => {
-
-    const cleanText = text?.trim();
-
-    if (!cleanText && !selectedFile) return;
-
-    speechSynthesis.cancel();
-    setIsSpeaking(false);
-    setIsTyping(true);
-
-    try {
-
-      let response;
-
-      // ============ IMAGE CASE ============
-      if (selectedFile) {
-
-        const formData = new FormData();
-        formData.append("image", selectedFile);
-        formData.append("message", cleanText || "Explain this image");
-        formData.append("language", language);
-
-        response = await fetch(
-          `${BASE_URL}/mediconnect/api/ai/chat`,
-          {
-            method: "POST",
-            body: formData
-          }
-        );
-
-        // Add user image message only when clicking SEND
-        setMessages(prev => [
-          ...prev,
-          {
-            sender: "user",
-            type: "image",
-            image: previewURL,
-            text: cleanText
-          }
-        ]);
-
-      } else {
-
-        setMessages(prev => [
-          ...prev,
-          {
-            sender: "user",
-            type: "text",
-            text: cleanText
-          }
-        ]);
-
-        response = await fetch(
-          `${BASE_URL}/mediconnect/api/ai/chat`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              message: cleanText,
-              language: language
-            })
-          }
-        );
-      }
-
-      if (!response.ok) throw new Error();
-
-      const data = await response.text();
-
-      setMessages(prev => [
-        ...prev,
-        {
-          sender: "bot",
-          type: "text",
-          text: data
-        }
-      ]);
-
-      speak(data);
-
-    } catch {
-      setMessages(prev => [
-        ...prev,
-        {
-          sender: "bot",
-          type: "text",
-          text: "⚠️ Unable to reach server."
-        }
-      ]);
-    }
-
-    setInput("");
-    setSelectedFile(null);
-    setPreviewURL(null);
-    setIsTyping(false);
-  };
-
-  const sendMessage = () => {
-    sendToBackend(input);
-  };
-
-  /* ================= FILE SELECT (NO AUTO SEND) ================= */
-
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setSelectedFile(file);
-    setPreviewURL(URL.createObjectURL(file));
-  };
+  }, [sendToBackend]);
 
   /* ================= SPEECH ================= */
-
   const speak = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 0.9;
@@ -193,8 +158,19 @@ export default function ChatBot() {
     setIsSpeaking(false);
   };
 
-  /* ================= UI ================= */
+  const sendMessage = () => {
+    sendToBackend(input);
+  };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+    setPreviewURL(URL.createObjectURL(file));
+  };
+
+  /* ================= UI ================= */
   return (
     <>
       {!isOpen && (
@@ -216,7 +192,6 @@ export default function ChatBot() {
           </div>
 
           <div className="chat-body">
-
             {messages.map((m, i) => (
               <div key={i} className={`msg ${m.sender}`}>
                 {m.type === "image" ? (
@@ -225,20 +200,15 @@ export default function ChatBot() {
                     {m.text && <div className="caption">{m.text}</div>}
                   </div>
                 ) : (
-                  <div className="text-bubble">
-                    {m.text}
-                  </div>
+                  <div className="text-bubble">{m.text}</div>
                 )}
               </div>
             ))}
 
             {isTyping && <div className="typing">AI is typing...</div>}
-
             <div ref={chatEndRef}></div>
-
           </div>
 
-          {/* IMAGE PREVIEW BEFORE SEND */}
           {previewURL && (
             <div className="preview-bar">
               <img src={previewURL} alt="preview" />
@@ -281,9 +251,7 @@ export default function ChatBot() {
           </div>
 
           <div className="voice-status">
-            {isSpeaking
-              ? "Speaking..."
-              : "Listening... Say 'Hello Anand'"}
+            {isSpeaking ? "Speaking..." : "Listening... Say 'Hello Anand'"}
           </div>
 
         </div>
