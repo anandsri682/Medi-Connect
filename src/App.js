@@ -17,7 +17,7 @@ import BookAppointment from "./pages/BookAppointment";
 import { ChatProvider } from "./pages/ChatContext";
 import ChatBot from "./components/Navbar/ChatBot";
 import FloatingButton from "./components/Navbar/FloatingButton";
-import HealthSlider from "./pages/HealthSlider";
+
 
 function App() {
 

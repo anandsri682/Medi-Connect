@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHospital, FaMapMarkerAlt, FaEnvelope, FaArrowRight } from "react-icons/fa";
 import "../styles/LandingPage.css";
-import HealthSlider from "./HealthSlider";
+
 // import HealthSlider from "./HealthSlider";
 
 export default function LandingPage() {
