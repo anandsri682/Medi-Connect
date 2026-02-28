@@ -9,7 +9,7 @@ import {
 import { RiRobot2Line } from "react-icons/ri";
 import "./ChatBot.css";
 
-const BASE_URL = "http://10.26.3.179:8080";
+const BASE_URL = "https://mediconnect-production-00d8.up.railway.app";
 
 export default function ChatBot() {
 
