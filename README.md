@@ -1,70 +1,234 @@
-# Getting Started with Create React App
+# 🏥 MediConnect – Multi-Clinic Digital Healthcare Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MediConnect is a full-stack healthcare management system that allows multiple clinics to register, manage patients, and handle appointments digitally.
 
-## Available Scripts
+It supports:
 
-In the project directory, you can run:
+- 👤 Patient Registration & Login
+- 🏥 Clinic/Hospital Login
+- 📅 Appointment Booking System
+- 🧾 Appointment History Tracking
+- 🔐 Secure Authentication (JWT Ready)
+- 🧑‍⚕ Multi-Tenant Clinic Architecture
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Live Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 👨‍⚕ Patient Side
+- Register / Login
+- View Clinics
+- Book Appointment
+- Select Doctor & Time Slot
+- View Appointment History
+- Secure Logout
 
-### `npm test`
+### 🏥 Clinic Side
+- Clinic Registration
+- Login Dashboard
+- View Appointments
+- Manage Patient Visits
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🛠 Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
+- React.js
+- React Router DOM
+- CSS3
+- React Icons
+- LocalStorage Authentication
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Backend
+- Spring Boot
+- REST APIs
+- MySQL
+- JPA / Hibernate
+- Multi-Tenant Data Isolation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 📂 Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 📦 Frontend (React)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+medi-connect-frontend/
+│
+├── public/
+│
+├── src/
+│   ├── components/
+│   │   ├── Navbar/
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Navbar.css
+│   │   │
+│   │   ├── ClinicCard.jsx
+│   │   ├── Footer.jsx
+│   │
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── About.jsx
+│   │   ├── Contact.jsx
+│   │   ├── Auth.jsx
+│   │   ├── OrganizationLogin.jsx
+│   │   ├── BookAppointment.jsx
+│   │   ├── PatientDashboard.jsx
+│   │   ├── OrganizationDashboard.jsx
+│   │
+│   ├── styles/
+│   │   ├── Navbar.css
+│   │   ├── Appointment.css
+│   │   ├── Dashboard.css
+│   │
+│   ├── App.js
+│   ├── index.js
+│
+└── package.json
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 📦 Backend (Spring Boot)
 
-## Learn More
+```
+medi-connect-backend/
+│
+├── src/main/java/com/mediconnect/
+│
+│   ├── controller/
+│   │   ├── PatientController.java
+│   │   ├── ClinicController.java
+│   │   ├── AppointmentController.java
+│   │
+│   ├── service/
+│   │   ├── PatientService.java
+│   │   ├── ClinicService.java
+│   │   ├── AppointmentService.java
+│   │
+│   ├── repository/
+│   │   ├── PatientRepository.java
+│   │   ├── ClinicRepository.java
+│   │   ├── AppointmentRepository.java
+│   │
+│   ├── entity/
+│   │   ├── Patient.java
+│   │   ├── Clinic.java
+│   │   ├── Appointment.java
+│   │
+│   ├── dto/
+│   │   ├── AppointmentRequestDTO.java
+│   │   ├── LoginRequestDTO.java
+│   │
+│   └── MediConnectApplication.java
+│
+├── src/main/resources/
+│   ├── application.properties
+│
+└── pom.xml
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🔐 Authentication Flow
 
-### Code Splitting
+1. User logs in
+2. Backend validates credentials
+3. Frontend stores:
+   - `user`
+   - `patientId`
+4. Protected pages check localStorage
+5. Logout clears localStorage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📅 Appointment Booking Flow
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Patient selects clinic
+2. Select doctor
+3. Select time slot
+4. Select date
+5. Data sent to backend
+6. Appointment stored in database
+7. Redirect to dashboard
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🧠 Architecture Design
 
-### Advanced Configuration
+- Multi-tenant clinic support
+- Role-based access (Patient / Clinic)
+- Secure booking validation
+- Frontend protected routes
+- Backend REST APIs
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🏗 Installation Guide
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Frontend
 
-### `npm run build` fails to minify
+```bash
+cd medi-connect-frontend
+npm install
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Runs on:
+```
+http://localhost:3000
+```
+
+---
+
+### Backend
+
+```bash
+cd medi-connect-backend
+mvn spring-boot:run
+```
+
+Runs on:
+```
+http://localhost:8080
+```
+
+---
+
+## 🌐 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|------------|
+| POST | /api/patients/login | Patient Login |
+| POST | /api/clinics/login | Clinic Login |
+| GET | /mediconnect/all | Get All Clinics |
+| POST | /api/appointments/book | Book Appointment |
+
+---
+
+## 🎯 Future Improvements
+
+- JWT Authentication
+- Spring Security
+- Email Notifications
+- SMS Alerts
+- Doctor Availability System
+- Admin Panel
+- Payment Integration
+
+---
+
+## 👨‍💻 Developed By
+
+**A. Anand Raju**  
+3rd Year CSE  
+G. Pulla Reddy Engineering College  
+
+GitHub: (Add your link here)
+
+---
+
+## 📜 License
+
+This project is developed for educational and hackathon purposes.
