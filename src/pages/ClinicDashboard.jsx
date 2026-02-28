@@ -33,7 +33,7 @@ export default function ClinicDashboard() {
           <button onClick={() =>           navigate(`/clinic/${clinic.id}/book`, {
   state: { clinic }
 })}>
- ;
+ 
   Book Appointment
 </button>
         </div>

@@ -6,12 +6,13 @@ export default function BookAppointment() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = useParams(); // clinic id from URL
+  const { id } = useParams();
 
   const [clinic, setClinic] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     doctorId: "",
@@ -26,16 +27,27 @@ export default function BookAppointment() {
     { id: 3, name: "Dr. Emily Patel - Neurologist" }
   ];
 
-  // ✅ Load clinic safely
+  // ===============================
+  // 🔐 LOGIN CHECK (FIXED)
+  // ===============================
   useEffect(() => {
 
+    const user = localStorage.getItem("user");
+    const patientId = localStorage.getItem("patientId");
+
+    if (!user || !patientId) {
+      navigate("/auth");
+      return;
+    }
+
+    // Load clinic
     if (location.state?.clinic) {
       setClinic(location.state.clinic);
       return;
     }
 
     if (id) {
-      fetch("https://mediconnect-production-00d8.up.railway.app/mediconnect/all")
+      fetch("http://10.26.3.179:8080/mediconnect/all")
         .then(res => res.json())
         .then(data => {
           const foundClinic = data.find(c => c.id === Number(id));
@@ -52,11 +64,11 @@ export default function BookAppointment() {
 
   }, [location, id, navigate]);
 
+  // ===============================
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Convert slot → "HH:mm:ss"
   const convertToTimeString = (slot) => {
     const [time, period] = slot.split(" ");
     let [hour, minute] = time.split(":").map(Number);
@@ -69,6 +81,9 @@ export default function BookAppointment() {
       .padStart(2, "0")}:00`;
   };
 
+  // ===============================
+  // 📤 SUBMIT
+  // ===============================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -107,14 +122,16 @@ export default function BookAppointment() {
       startTime: convertToTimeString(selectedSlot)
     };
 
-    console.log("SENDING DATA:", payload);
-
     try {
+      setLoading(true);
+
       const response = await fetch(
         "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/appointments/book",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify(payload)
         }
       );
@@ -124,16 +141,23 @@ export default function BookAppointment() {
       if (response.ok) {
         setSuccess(true);
         setMessage("Appointment Booked Successfully");
+
+        setTimeout(() => {
+          navigate("/patient-dashboard", {
+            state: { activeTab: "appointments" }
+          });
+        }, 1500);
+
       } else {
         setSuccess(false);
         setMessage(data.message || "Booking Failed");
-        console.log("Backend Error:", data);
       }
 
     } catch (error) {
       setSuccess(false);
       setMessage("Server Error");
-      console.log(error);
+    } finally {
+      setLoading(false);
     }
 
     setTimeout(() => setMessage(""), 4000);
@@ -197,12 +221,13 @@ export default function BookAppointment() {
               value={formData.date}
               onChange={handleChange}
               required
+              min={new Date().toISOString().split("T")[0]}
             />
 
           </div>
 
-          <button type="submit" className="book-btn">
-            Book Appointment
+          <button type="submit" className="book-btn" disabled={loading}>
+            {loading ? "Booking..." : "Book Appointment"}
           </button>
 
         </form>

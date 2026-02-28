@@ -7,29 +7,33 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ activeTab, setActiveTab }) => {
 
   const navigate = useNavigate();
 
-const handleLogout = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("patientId");
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("patientId");
+    window.dispatchEvent(new Event("authChange"));
+    navigate("/");
+  };
 
-  // Trigger re-render event
-  window.dispatchEvent(new Event("authChange"));
-
-  navigate("/");
-};
   return (
     <div className="sidebar">
       <div className="logo">MediConnect</div>
 
       <ul>
-        <li className="active">
+        <li 
+          className={activeTab === "profile" ? "active" : ""}
+          onClick={() => setActiveTab("profile")}
+        >
           <FaUser /> Profile
         </li>
 
-        <li>
+        <li 
+          className={activeTab === "appointments" ? "active" : ""}
+          onClick={() => setActiveTab("appointments")}
+        >
           <FaCalendarCheck /> Appointments
         </li>
 
@@ -37,7 +41,6 @@ const handleLogout = () => {
           <FaCog /> Settings
         </li>
 
-        {/* Logout */}
         <li className="logout" onClick={handleLogout}>
           <FaSignOutAlt /> Logout
         </li>

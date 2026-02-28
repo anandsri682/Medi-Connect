@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 const OrganizationLogin = () => {
 
   const [isLogin, setIsLogin] = useState(true);
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     hospitalName: "",
     mail: "",
@@ -28,19 +29,14 @@ const navigate = useNavigate();
     let url;
     let payload;
 
-    // ✅ LOGIN
     if (isLogin) {
-
       url = "https://mediconnect-production-00d8.up.railway.app/mediconnect/api/clinic/login";
-
       payload = {
         mail: formData.mail,
         password: formData.password
       };
-
     } else {
 
-      // Password match check
       if (formData.password !== formData.confirmPassword) {
         setSuccess(false);
         setMessage("Passwords do not match");
@@ -70,25 +66,38 @@ const navigate = useNavigate();
 
       const data = await response.json();
 
-     if (response.ok) {
-  setSuccess(true);
-  setMessage(data.message || "Success");
+      if (response.ok) {
 
-  // ✅ Store clinic info (optional)
-  localStorage.setItem("clinic", JSON.stringify(data));
+        setSuccess(true);
+        setMessage(isLogin ? "Login Successful" : "Registration Successful");
 
-  // ✅ If login → go to dashboard
-  if (isLogin) {
-    navigate("/organization-dashboard");
-  } else {
-    setIsLogin(true);
-  }
-}else {
+        // ✅ ONLY STORE CLINIC DURING LOGIN
+        if (isLogin) {
+
+          // Backend may return:
+          // 1. { message, clinic: {...} }
+          // 2. {...clinicObject}
+          const clinicData = data.clinic ? data.clinic : data;
+
+          if (clinicData && clinicData.id) {
+            localStorage.setItem("clinic", JSON.stringify(clinicData));
+            window.dispatchEvent(new Event("authChange"));
+          } else {
+            console.log("Invalid clinic data:", data);
+          }
+
+          navigate("/organization-dashboard");
+        } else {
+          setIsLogin(true);
+        }
+
+      } else {
         setSuccess(false);
         setMessage(data.message || "Something went wrong");
       }
 
     } catch (error) {
+      console.log("Server error:", error);
       setSuccess(false);
       setMessage("Server error");
     }
@@ -111,8 +120,7 @@ const navigate = useNavigate();
 
         <form onSubmit={handleSubmit}>
 
-          {/* LOGIN MODE */}
-          {isLogin && (
+          {isLogin ? (
             <>
               <input
                 type="email"
@@ -132,10 +140,7 @@ const navigate = useNavigate();
                 required
               />
             </>
-          )}
-
-          {/* REGISTER MODE */}
-          {!isLogin && (
+          ) : (
             <>
               <input
                 name="hospitalName"

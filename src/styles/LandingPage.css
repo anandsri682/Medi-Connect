@@ -1,102 +1,168 @@
 .landing-container {
   min-height: 100vh;
-  padding: 120px 40px;
+  padding: 80px 20px 60px;
   text-align: center;
-  font-family: "Poppins", sans-serif;
-  color: white;
 
-  background: linear-gradient(135deg, #1E3C72, #2A5298);
+  background: linear-gradient(135deg, #e6f7ff 0%, #d9f2f7 50%, #f0fbff 100%);
 }
 
-.landing-container h1 {
-  font-size: 40px;
-  margin-bottom: 10px;
+/* Hero */
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #0a4e75;
+  line-height: 1.2;
 }
 
-.landing-container p {
-  opacity: 0.85;
-  margin-bottom: 60px;
+.hero-content p {
+  font-size: 1.15rem;
+  color: #4a6f82;
+  line-height: 1.6;
 }
 
-/* Grid Layout */
+/* Grid */
 .hospital-grid {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 35px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* Hospital Card */
+/* ✨ PREMIUM HEALTH CARD */
 .hospital-card {
-  width: 300px;
-  padding: 25px;
-  border-radius: 20px;
-
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-
-  transition: 0.4s ease;
+  background: linear-gradient(145deg, #ffffff, #f2fbff);
+  border-radius: 24px;
+  padding: 30px;
   text-align: left;
-}
-
-.hospital-card h2 {
-  margin-bottom: 15px;
-}
-
-.hospital-card p {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.hospital-card button {
-  margin-top: 15px;
-  padding: 8px 18px;
-  border-radius: 25px;
-  border: none;
-  background: white;
-  font-weight: 600;
+  position: relative;
+  overflow: hidden;
   cursor: pointer;
-  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid rgba(10, 102, 153, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 128, 255, 0.08);
+
+  transition: all 0.4s ease;
 }
 
-.hospital-card button:hover {
-  background: black;
-  color: white;
+/* Animated top border */
+.hospital-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, #0a6ea8, #00c6a9);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
+.hospital-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Hover animation */
 .hospital-card:hover {
   transform: translateY(-10px);
+  box-shadow: 0 20px 45px rgba(0, 128, 255, 0.15);
 }
 
-/* Loader */
-.loader {
-  border: 5px solid rgba(255,255,255,0.2);
-  border-top: 5px solid white;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: 20px auto;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.error-text {
-  color: #ff4d4d;
+/* Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 20px;
+}
+
+.icon-wrapper {
+  background: linear-gradient(135deg, #00c6a9, #0a6ea8);
+  width: 55px;
+  height: 55px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hospital-icon {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.card-header h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0a4e75;
+}
+
+/* Details */
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #3f6275;
+}
+
+.detail-icon {
+  margin-top: 3px;
+  color: #00a896;
+}
+
+/* Footer Button */
+.card-footer {
+  margin-top: auto;
+}
+
+.action-button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+
+  background: linear-gradient(135deg, #0a6ea8, #00c6a9);
+  color: white;
+
+  font-weight: 600;
+  font-size: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 168, 150, 0.3);
+}
+
+.btn-icon {
+  transition: transform 0.3s ease;
+}
+
+.action-button:hover .btn-icon {
+  transform: translateX(6px);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .hospital-card {
-    width: 90%;
+  .hero-content h1 {
+    font-size: 2.2rem;
   }
 
-  .landing-container h1 {
-    font-size: 26px;
+  .hospital-grid {
+    grid-template-columns: 1fr;
   }
 }
